@@ -1,5 +1,9 @@
 # QuizMaster
 
+[![Validate](https://github.com/vertigoGotSome/QuizMaster/actions/workflows/ci.yml/badge.svg)](https://github.com/vertigoGotSome/QuizMaster/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/vertigoGotSome/QuizMaster?include_prereleases)](https://github.com/vertigoGotSome/QuizMaster/releases)
+
 QuizMaster is a self-hosted, host-moderated game-night application built with ASP.NET Core, SQL Server, Angular, SignalR, and Discord OAuth. It currently offers three German-language game modes: Imposter, Who Wants to Be a Millionaire (WWM), and Jeopardy.
 
 The host controls rounds, answers, scoring, timers, and content. Players join from a browser and receive only the state required to play.
