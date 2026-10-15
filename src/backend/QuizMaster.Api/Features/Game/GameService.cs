@@ -42,6 +42,24 @@ internal static class GameService
     public static int ImposterPass(IReadOnlyList<int> orderedPlayerIds, int clueCount) =>
         orderedPlayerIds.Count == 0 ? 0 : Math.Min(2, clueCount / orderedPlayerIds.Count + 1);
 
+    /// <summary>Captures the selected WWM question and how far it deviates from the target level.</summary>
+    public sealed record WwmQuestionSelection(Question Question, int TargetDifficulty, int Distance);
+
+    /// <summary>
+    /// Selects an unused question nearest to the requested difficulty and records the fallback distance.
+    /// </summary>
+    public static WwmQuestionSelection? ChooseQuestionWithDiagnostics(
+        IReadOnlyCollection<Question> questions,
+        IReadOnlySet<int> usedQuestionIds,
+        int difficulty
+    )
+    {
+        var selected = ChooseQuestion(questions, usedQuestionIds, difficulty);
+        return selected is null
+            ? null
+            : new WwmQuestionSelection(selected, difficulty, Math.Abs(selected.Difficulty - difficulty));
+    }
+
     /// <summary>
     /// Selects an unused question nearest to the requested difficulty and randomizes only among equals.
     /// </summary>

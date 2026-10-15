@@ -180,6 +180,12 @@
             </div>
             <span class="pill">Frage {{ g.session()?.round || 0 }}</span>
           </div>
+          @if (missingWwmDifficulties().length) {
+            <p class="note">
+              Keine unbenutzte Frage f�r Schwierigkeit: {{ missingWwmDifficulties().join(', ') }}.
+              Bei gro�en L�cken wird beim Start gewarnt.
+            </p>
+          }
           <div class="wwm-host-actions">
             <button class="wwm-primary" (click)="wwmPrimary()">{{ wwmPrimaryLabel() }}</button>
             @if (g.session()?.phase === 'question') {

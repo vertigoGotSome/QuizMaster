@@ -22,6 +22,7 @@ export class HostComponent {
 
   readonly questions = signal<Question[]>([]);
   readonly words = signal<SecretWord[]>([]);
+  readonly wwmReadiness = signal<{ difficulty: number; total: number; unused: number }[]>([]);
   readonly message = signal('');
 
   clue = '';
@@ -82,8 +83,26 @@ export class HostComponent {
         void this.command('host/resolve-question', {});
         break;
       default:
-        void this.command('host/start-question', {});
+        void this.startWwmQuestion();
     }
+  }
+
+  /** Starts the next WWM cell and surfaces a fallback when the catalogue is too thin. */
+  async startWwmQuestion(): Promise<void> {
+    try {
+      const result = await this.g.postResult<{ warning?: string }>('host/start-question', {});
+      this.message.set(result.warning || 'N�chste Frage gestartet.');
+      await this.load();
+    } catch (error) {
+      this.message.set(`Aktion fehlgeschlagen: ${describeApiError(error)}`);
+    }
+  }
+
+  /** Lists target levels that have no unused exact-match WWM question. */
+  missingWwmDifficulties(): number[] {
+    return this.wwmReadiness()
+      .filter((band) => band.unused === 0)
+      .map((band) => band.difficulty);
   }
 
   ngOnInit(): void {
@@ -108,6 +127,11 @@ export class HostComponent {
 
     try {
       this.questions.set(await this.g.get<Question[]>('host/questions'));
+      this.wwmReadiness.set(
+        await this.g.get<{ difficulty: number; total: number; unused: number }[]>(
+          'host/wwm/readiness',
+        ),
+      );
       const session = this.g.session();
       if (session) {
         this.imposters = session.imposterCount;
