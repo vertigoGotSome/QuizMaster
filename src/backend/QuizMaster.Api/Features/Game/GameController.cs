@@ -882,6 +882,85 @@ public static class GameController
             .AddEndpointFilter(SerializeGameChange)
             .AddEndpointFilter(HostOnly);
         app.MapGet(
+                "/api/host/content/readiness",
+                async (GameDbContext db) =>
+                {
+                    var words = await db.Words.AsNoTracking().ToListAsync();
+                    var wwmQuestions = await db.Questions.AsNoTracking().ToListAsync();
+                    var jeopardyCells = await db.JeopardyQuestions.AsNoTracking().ToListAsync();
+
+                    var imposterWarnings = words
+                        .Where(word =>
+                            !string.IsNullOrWhiteSpace(word.Hint)
+                            && word.Hint.Contains(word.Word, StringComparison.OrdinalIgnoreCase)
+                        )
+                        .Take(5)
+                        .Select(word => $"Helper word for '{word.Word}' contains the secret word.")
+                        .ToList();
+                    if (words.Count < 6)
+                        imposterWarnings.Insert(0, "Add at least six distinct words for a varied round.");
+
+                    var missingWwmLevels = Enumerable
+                        .Range(1, 30)
+                        .Where(level => wwmQuestions.All(question => question.Difficulty != level))
+                        .ToArray();
+                    var wwmWarnings = new List<string>();
+                    if (wwmQuestions.Count < 30)
+                        wwmWarnings.Add("A full WWM game needs at least thirty questions.");
+                    if (missingWwmLevels.Length > 0)
+                        wwmWarnings.Add(
+                            $"No exact questions for difficulty level(s): {string.Join(", ", missingWwmLevels)}."
+                        );
+
+                    var jeopardyGroups = jeopardyCells
+                        .GroupBy(cell => new { cell.Board, cell.BoardRound, cell.Category })
+                        .ToList();
+                    var completeJeopardyCategories = jeopardyGroups.Count(group =>
+                        group.Count() >= 5 && group.Select(cell => cell.Value).Distinct().Count() >= 5
+                    );
+                    var jeopardyWarnings = new List<string>();
+                    if (completeJeopardyCategories < 6)
+                        jeopardyWarnings.Add(
+                            $"Only {completeJeopardyCategories} complete category columns are available; a board needs six."
+                        );
+                    if (
+                        jeopardyGroups.Any(group =>
+                            group.Count() < 5 || group.Select(cell => cell.Value).Distinct().Count() < 5
+                        )
+                    )
+                        jeopardyWarnings.Add(
+                            "Some Jeopardy categories have fewer than five unique values."
+                        );
+
+                    return Results.Ok(
+                        new
+                        {
+                            imposter = new
+                            {
+                                ready = words.Count >= 6 && imposterWarnings.Count == 0,
+                                summary = $"{words.Count} words available.",
+                                warnings = imposterWarnings,
+                            },
+                            wwm = new
+                            {
+                                ready = wwmQuestions.Count >= 30 && missingWwmLevels.Length == 0,
+                                summary = $"{wwmQuestions.Count} questions across {30 - missingWwmLevels.Length}/30 exact difficulty levels.",
+                                warnings = wwmWarnings,
+                            },
+                            jeopardy = new
+                            {
+                                ready = completeJeopardyCategories >= 6 && jeopardyWarnings.Count == 0,
+                                summary = $"{completeJeopardyCategories} complete category columns available.",
+                                warnings = jeopardyWarnings,
+                            },
+                        }
+                    );
+                }
+            )
+            .RequireAuthorization()
+            .AddEndpointFilter(HostOnly);
+
+        app.MapGet(
                 "/api/host/wwm/readiness",
                 async (GameDbContext db) =>
                 {

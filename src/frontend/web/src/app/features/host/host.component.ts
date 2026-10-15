@@ -16,7 +16,7 @@ import { CameraStreamDirective } from '../../core/services/camera-stream.directi
 
 import { ConfirmationService } from '../../core/services/confirmation.service';
 
-import type { SecretWord, TeamScore } from './host.models';
+import type { ContentReadiness, SecretWord, TeamScore } from './host.models';
 
 /** Provides game-specific host controls without exposing the host API to players. */
 
@@ -37,6 +37,7 @@ export class HostComponent {
   readonly questions = signal<Question[]>([]);
 
   readonly words = signal<SecretWord[]>([]);
+  readonly contentReadiness = signal<ContentReadiness | null>(null);
 
   readonly wwmReadiness = signal<{ difficulty: number; total: number; unused: number }[]>([]);
 
@@ -74,6 +75,14 @@ export class HostComponent {
 
       Math.max(2, playerCount),
     );
+  }
+
+  /** Returns the readiness report for the currently selected mode. */
+  activeReadiness() {
+    const game = this.g.session()?.game;
+    const report = this.contentReadiness();
+    if (!report || game === 'none' || !game) return null;
+    return report[game as keyof ContentReadiness] ?? null;
   }
 
   teamStandings(): TeamScore[] {

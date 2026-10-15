@@ -1697,3 +1697,14 @@ kbd {
     margin-right: 0;
   }
 }
+
+.content-readiness {
+  border-color: #7a609f;
+}
+.content-readiness.content-ready {
+  border-color: #2c9a72;
+}
+.content-readiness .btn {
+  display: inline-block;
+  margin-top: 0.4rem;
+}
