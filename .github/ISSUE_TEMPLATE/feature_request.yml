@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest an improvement for QuizMaster.
+title: "[Feature]: "
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or game-night need
+      description: What would be easier, clearer, or more fun with this change?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the expected player and host experience.
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Related area
+      options:
+        - Shared experience
+        - Imposter
+        - WWM
+        - Jeopardy
+        - Storage
+        - Content tooling
+        - Deployment
+        - Developer experience
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or references
+      description: Include mockups, examples, or links when useful.
