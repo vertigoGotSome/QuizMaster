@@ -148,6 +148,9 @@ namespace QuizMaster.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("int");
+
                     b.Property<string>("Clue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

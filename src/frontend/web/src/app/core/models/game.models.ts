@@ -42,6 +42,7 @@ export interface JeopardyCell {
   boardRound: number;
   category: string;
   value: number;
+  difficulty: number;
   slot: number;
   state: string;
 }

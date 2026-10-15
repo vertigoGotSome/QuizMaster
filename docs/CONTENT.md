@@ -23,3 +23,12 @@ Each catalogue has its own destructive clear action. Use it only after exporting
 - Keep image URLs stable and use images only when they are necessary to solve the clue.
 
 Question text and player-facing content may remain German for a German-speaking game night.
+
+### Jeopardy difficulty calibration
+
+Jeopardy cells carry a `difficulty` from **1** (introductory) to **10** (expert).
+If omitted or set to `0`, QuizMaster derives a baseline from the board round and
+visible value: board one maps from 1–5 and board two maps from 6–10. Authors may
+supply a different value, but the importer reports a warning when it departs from
+that baseline. Every selected category must increase strictly by difficulty from
+its lowest to highest value before it can be used on a board.

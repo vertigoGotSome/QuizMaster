@@ -65,12 +65,16 @@ export class StorageComponent implements OnInit {
       if (!Array.isArray(parsed) || parsed.length === 0) {
         throw new Error('Expected a non-empty JSON array.');
       }
-      const result = await this.game.postResult<{ inserted: number; skipped: number }>(
-        `${this.path()}/import`,
-        parsed,
-      );
+      const result = await this.game.postResult<{
+        inserted: number;
+        skipped: number;
+        warnings?: string[];
+      }>(`${this.path()}/import`, parsed);
+      const warnings = result.warnings?.length
+        ? ` ${result.warnings.length} difficulty warning(s): ${result.warnings.join(' ')}`
+        : '';
       this.message.set(
-        `Imported ${result.inserted}, skipped ${result.skipped} invalid or duplicate entries.`,
+        `Imported ${result.inserted}, skipped ${result.skipped} invalid or duplicate entries.${warnings}`,
       );
       await this.load();
     } catch (error) {
