@@ -58,16 +58,35 @@
           </div>
         }
         <div class="score-adjustment" aria-label="Manuelle Punktkorrektur">
-          <label
-            >Punktebetrag
-            <input
-              type="number"
-              min="1"
-              max="10000"
-              step="1"
-              inputmode="numeric"
-              [(ngModel)]="manualPoints" /></label
-          ><span class="note">f√ºr den gew√§hlten Mitspieler addieren oder abziehen</span>
+          <div class="score-adjustment-fields">
+            <label
+              >Punktebetrag
+              <input
+                type="number"
+                min="1"
+                max="10000"
+                step="1"
+                inputmode="numeric"
+                [(ngModel)]="manualPoints" /></label
+            ><label
+              >Grund <span class="note">(optional)</span>
+              <input
+                type="text"
+                maxlength="80"
+                placeholder="z. B. Moderationskorrektur"
+                [(ngModel)]="manualScoreReason" /></label
+            >
+          </div>
+          @if (scorePresets().length) {
+            <div class="score-presets" aria-label="Punktevorschl‰ge f¸r den aktuellen Modus">
+              @for (preset of scorePresets(); track preset.label) {
+                <button class="small muted" type="button" (click)="manualPoints = preset.amount">
+                  {{ preset.label }}
+                </button>
+              }
+            </div>
+          }
+          <span class="note">Betrag w‰hlen oder frei eingeben; danach beim Mitspieler addieren oder abziehen.</span>
         </div>
         <div class="player-list">
           @for (p of players(); track p.id) {
