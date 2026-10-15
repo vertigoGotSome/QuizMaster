@@ -51,6 +51,21 @@
         </div>
       </section>
 
+      @if (activeReadiness(); as readiness) {
+        <section class="panel content-readiness" [class.content-ready]="readiness.ready">
+          <div class="section-title">
+            <h2>Content-Check</h2>
+            <span class="pill">{{ readiness.ready ? 'BEREIT' : 'PRÜFEN' }}</span>
+          </div>
+          <p>{{ readiness.summary }}</p>
+          @for (warning of readiness.warnings; track warning) {
+            <p class="note">Hinweis: {{ warning }}</p>
+          } @empty {
+            <p class="note">Der Inhalt kann für diesen Spielmodus verwendet werden.</p>
+          }
+          <a class="small btn" routerLink="/storage">Inhalte öffnen</a>
+        </section>
+      }
       <section class="panel">
         <h2>Spieler</h2>
 

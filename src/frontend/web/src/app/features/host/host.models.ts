@@ -12,3 +12,17 @@ export interface TeamScore {
   points: number;
   members: number;
 }
+
+/** Mode-specific readiness report calculated from host-owned content. */
+export interface ContentReadiness {
+  imposter: ModeReadiness;
+  wwm: ModeReadiness;
+  jeopardy: ModeReadiness;
+}
+
+/** A concise status and actionable content gaps for one mode. */
+export interface ModeReadiness {
+  ready: boolean;
+  summary: string;
+  warnings: string[];
+}
