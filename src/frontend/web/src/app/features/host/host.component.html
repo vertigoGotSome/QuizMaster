@@ -1,10 +1,12 @@
 <!-- QuizMaster component view. UI state is supplied by its matching TypeScript component. -->
+
 @if (!g.me()?.isHost) {
   <div class="panel">Nur der festgelegte Host kann diese Seite öffnen.</div>
 } @else {
   <div class="heading">
     <div>
       <p class="eyebrow">HOST PANEL</p>
+
       <h1>
         {{
           g.session()?.game === 'wwm'
@@ -17,12 +19,15 @@
         }}
       </h1>
     </div>
+
     <span class="pill">{{ players().length }} Mitspieler online</span>
   </div>
+
   <div class="dashboard">
     <div class="main-column">
       <section class="panel">
         <h2>Spiel auswählen</h2>
+
         <div class="inline">
           <button
             (click)="chooseGame('imposter')"
@@ -30,20 +35,25 @@
           >
             Imposter
           </button>
+
           <button (click)="chooseGame('wwm')" [class.active]="g.session()?.game === 'wwm'">
             WWM Quiz
           </button>
+
           <button
             (click)="chooseGame('jeopardy')"
             [class.active]="g.session()?.game === 'jeopardy'"
           >
             Jeopardy
           </button>
+
           <button class="muted" (click)="chooseGame('none')">Lobby</button>
         </div>
       </section>
+
       <section class="panel">
         <h2>Spieler</h2>
+
         @if (teamStandings().length) {
           <div class="team-scoreboard">
             @for (team of teamStandings(); track team.name) {
@@ -57,10 +67,12 @@
             }
           </div>
         }
+
         <div class="score-adjustment" aria-label="Manuelle Punktkorrektur">
           <div class="score-adjustment-fields">
             <label
               >Punktebetrag
+
               <input
                 type="number"
                 min="1"
@@ -70,15 +82,17 @@
                 [(ngModel)]="manualPoints" /></label
             ><label
               >Grund <span class="note">(optional)</span>
+
               <input
                 type="text"
                 maxlength="80"
                 placeholder="z. B. Moderationskorrektur"
-                [(ngModel)]="manualScoreReason" /></label
-            >
+                [(ngModel)]="manualScoreReason"
+            /></label>
           </div>
+
           @if (scorePresets().length) {
-            <div class="score-presets" aria-label="Punktevorschl�ge f�r den aktuellen Modus">
+            <div class="score-presets" aria-label="Punktevorschläge für den aktuellen Modus">
               @for (preset of scorePresets(); track preset.label) {
                 <button class="small muted" type="button" (click)="manualPoints = preset.amount">
                   {{ preset.label }}
@@ -86,8 +100,12 @@
               }
             </div>
           }
-          <span class="note">Betrag w�hlen oder frei eingeben; danach beim Mitspieler addieren oder abziehen.</span>
+
+          <span class="note"
+            >Betrag wählen oder frei eingeben; danach beim Mitspieler addieren oder abziehen.</span
+          >
         </div>
+
         <div class="player-list">
           @for (p of players(); track p.id) {
             <div
@@ -106,15 +124,21 @@
                   playsinline
                 ></video>
               }
+
               <span>{{ p.name }}</span>
+
               <span>{{ p.points }} P</span>
+
               <button class="small" (click)="points(p, 1)">+{{ manualPoints || 0 }}</button>
+
               <button class="small muted" (click)="points(p, -1)">−{{ manualPoints || 0 }}</button>
+
               <select
                 [ngModel]="p.team"
                 (ngModelChange)="command('host/team', { playerId: p.id, team: $event })"
               >
                 <option value="">Einzelwertung</option>
+
                 @for (team of teamOptions(); track team) {
                   <option [value]="team">Team {{ team }}</option>
                 }
@@ -122,33 +146,44 @@
             </div>
           }
         </div>
+
         @if (camera.error()) {
           <p class="note">Kamera: {{ camera.error() }}</p>
         }
       </section>
+
       @if (g.session()?.game === 'imposter') {
         <section class="panel">
           <h2>Imposter · Rollen & Wort</h2>
+
           <div class="inline">
             <label>Imposter <input type="number" min="1" max="3" [(ngModel)]="imposters" /> </label>
+
             <label> <input type="checkbox" [(ngModel)]="helper" /> Hilfswörter</label>
+
             <label title="Never expose the secret word to the host, even through the API.">
               <input type="checkbox" [(ngModel)]="hostPlaysBlind" /> Als Host blind
               mitspielen</label
             >
+
             <select [(ngModel)]="selectedWord" [disabled]="hostPlaysBlind">
               <option [ngValue]="null">Zufälliges Wort später wählen</option>
+
               @for (w of words(); track w.id) {
                 <option [ngValue]="w.id">{{ w.word }}</option>
               }
             </select>
+
             <button (click)="saveConfig()">Speichern</button>
+
             <button (click)="command('host/start-imposter', {})">
               Neue Runde mit geheimen Rollen
             </button>
           </div>
+
           <p>
             Geheimes Wort (nur Host):
+
             <strong>{{
               hostPlaysBlind ? 'Verborgen (Mitspielmodus)' : g.state()?.word || 'Noch nicht gewählt'
             }}</strong>
@@ -159,9 +194,12 @@
       @if (g.session()?.game === 'imposter' && g.session()?.phase === 'clues') {
         <section class="panel">
           <h2>Gesprochenen Hinweis erfassen</h2>
+
           <p>Runde {{ g.state()?.cluePass }} / 2 · Sprecher: {{ speakerName() }}</p>
+
           <div class="inline">
             <input [(ngModel)]="clue" maxlength="60" placeholder="Gesagtes Wort eingeben" />
+
             <button
               [disabled]="!clue.trim() || !g.state()?.currentSpeakerId"
               (click)="recordClue()"
@@ -171,47 +209,69 @@
           </div>
         </section>
       }
+
       @if (g.session()?.game === 'wwm') {
         <section class="panel wwm-host-console">
           <div class="section-title">
             <div>
               <p class="eyebrow">WWM MODERATION</p>
+
               <h2>Aktuelle Frage</h2>
             </div>
+
             <span class="pill">Frage {{ g.session()?.round || 0 }}</span>
           </div>
+
+          @if (missingWwmDifficulties().length) {
+            <p class="note">
+              Keine unbenutzte Frage für Schwierigkeit: {{ missingWwmDifficulties().join(', ') }}.
+              Bei großen Lücken wird beim Start gewarnt.
+            </p>
+          }
+
           <div class="wwm-host-actions">
             <button class="wwm-primary" (click)="wwmPrimary()">{{ wwmPrimaryLabel() }}</button>
+
             @if (g.session()?.phase === 'question') {
               <button class="muted" (click)="command('host/skip-question', {})">
                 Andere Frage
               </button>
             }
           </div>
+
           @if (g.state()?.question; as q) {
             <h3>{{ q.text }}</h3>
+
             <div class="answer-grid">
               <span>A · {{ q.answerA }}</span>
+
               <span>B · {{ q.answerB }}</span>
+
               <span>C · {{ q.answerC }}</span>
+
               <span>D · {{ q.answerD }}</span>
             </div>
+
             <p class="host-answer-key">
               Lösung: <strong>{{ q.correct }}</strong>
             </p>
           }
         </section>
+
         <section class="panel">
           <h2>Antwortstatus</h2>
+
           @for (a of g.state()?.answers || []; track a.playerId) {
             <div class="list-row">
               <span>Spieler #{{ a.playerId }} → {{ a.answer }}</span>
+
               <button
                 class="small"
                 (click)="command('host/override-answer', { playerId: a.playerId, correct: true })"
               >
                 Richtig
               </button>
+
               <button
                 class="small"
                 (click)="command('host/override-answer', { playerId: a.playerId, correct: false })"
@@ -224,16 +284,20 @@
           }
         </section>
       }
+
       @if (g.session()?.game === 'jeopardy') {
         <qm-jeopardy />
       }
     </div>
+
     <div class="side-column">
       <section class="panel host-camera-card">
         <div class="section-title">
           <h2>Host-Kamera</h2>
+
           <span class="pill">LIVE</span>
         </div>
+
         @if (camera.localStream(); as local) {
           <video
             class="host-camera-stage"
@@ -245,13 +309,17 @@
         } @else {
           <div class="host-camera-placeholder">Kamera ist aus</div>
         }
+
         <button class="small" (click)="camera.enabled() ? camera.disable() : camera.enable()">
           {{ camera.enabled() ? 'Kamera ausschalten' : 'Kamera einschalten' }}
         </button>
       </section>
+
       <section class="panel">
         <h2>Rundensteuerung</h2>
+
         <p>Runde {{ g.session()?.round || 0 }} · {{ g.session()?.phase }}</p>
+
         @if (g.session()?.game === 'imposter') {
           <button
             class="wide"
@@ -260,6 +328,7 @@
           >
             Abstimmung starten
           </button>
+
           <button
             class="wide"
             [disabled]="g.session()?.phase !== 'vote'"
@@ -270,28 +339,36 @@
         }
 
         @if (g.session()?.game === 'wwm') {}
+
         <button class="wide muted" (click)="phase('lobby')">Zur Lobby</button>
       </section>
+
       <section class="panel">
         <h2>Live Status</h2>
+
         @if (g.session()?.game === 'imposter' && g.session()?.hostPlaysBlind) {
           <p><a routerLink="/play">Eigene Rolle und Spielerkameras öffnen</a></p>
         }
+
         <div class="status-stack">
           <span class="status-chip">Spiel · {{ g.session()?.game || '—' }}</span
           ><span class="status-chip">Phase · {{ g.session()?.phase || '—' }}</span
           ><span class="status-chip">Online · {{ g.players().length }}</span>
         </div>
+
         <p class="note">Spielstand wird automatisch synchronisiert.</p>
       </section>
     </div>
   </div>
+
   <div class="panel notice">
     @if (message()) {
       <p>{{ message() }}</p>
     }
+
     <p>
       Inhaltsverwaltung: <a routerLink="/storage">Storage Manager</a> ·
+
       <button class="small" (click)="load()">Fragen & Wörter laden</button> · Neue Einträge über
       Host-API möglich.
     </p>

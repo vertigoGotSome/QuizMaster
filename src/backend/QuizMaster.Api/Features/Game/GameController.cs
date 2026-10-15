@@ -881,6 +881,32 @@ public static class GameController
             .RequireAuthorization()
             .AddEndpointFilter(SerializeGameChange)
             .AddEndpointFilter(HostOnly);
+        app.MapGet(
+                "/api/host/wwm/readiness",
+                async (GameDbContext db) =>
+                {
+                    var session = await db.Sessions.FirstAsync();
+                    var usedIds = (
+                        await db.QuestionUses.Where(use => use.SessionId == session.Id)
+                            .Select(use => use.QuestionId)
+                            .ToListAsync()
+                    ).ToHashSet();
+                    var questions = await db.Questions.AsNoTracking().ToListAsync();
+                    return Results.Ok(
+                        Enumerable.Range(1, 30).Select(difficulty => new
+                        {
+                            difficulty,
+                            total = questions.Count(question => question.Difficulty == difficulty),
+                            unused = questions.Count(question =>
+                                question.Difficulty == difficulty && !usedIds.Contains(question.Id)
+                            ),
+                        })
+                    );
+                }
+            )
+            .RequireAuthorization()
+            .AddEndpointFilter(HostOnly);
+
         app.MapPost(
                 "/api/host/start-question",
                 async (GameDbContext db, IHubContext<GameHub> hub) =>
@@ -902,9 +928,14 @@ public static class GameController
                             .Select(x => x.QuestionId)
                             .ToListAsync()
                     ).ToHashSet();
-                    var next = GameService.ChooseQuestion(questions, usedIds, s.Round + 1);
-                    if (next is null)
+                    var selection = GameService.ChooseQuestionWithDiagnostics(
+                        questions,
+                        usedIds,
+                        s.Round + 1
+                    );
+                    if (selection is null)
                         return Results.Conflict("No unused questions remain.");
+                    var next = selection.Question;
                     s.QuestionId = next.Id;
                     s.QuestionIndex++;
                     s.Round++;
@@ -937,7 +968,15 @@ public static class GameController
                         );
                     await db.SaveChangesAsync();
                     await hub.Clients.All.SendAsync("changed");
-                    return Results.Ok(PublicSession(s));
+                    return Results.Ok(
+                        new
+                        {
+                            session = PublicSession(s),
+                            warning = selection.Distance > 2
+                                ? $"No close question exists for difficulty {selection.TargetDifficulty}. Using difficulty {next.Difficulty}."
+                                : null,
+                        }
+                    );
                 }
             )
             .RequireAuthorization()

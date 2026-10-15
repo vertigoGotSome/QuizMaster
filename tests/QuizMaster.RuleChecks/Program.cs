@@ -69,6 +69,15 @@ Check(
 var final = GameService.ChooseQuestion(questions, used, 1)!;
 used.Add(final.Id);
 Check(final.Id == 3, "Remaining question was lost");
+var diagnosticSelection = GameService.ChooseQuestionWithDiagnostics(
+    questions,
+    new HashSet<int> { 1, 2 },
+    1
+)!;
+Check(
+    diagnosticSelection.Question.Id == 3 && diagnosticSelection.Distance == 8,
+    "WWM fallback diagnostics are incorrect"
+);
 Check(GameService.ChooseQuestion(questions, used, 1) == null, "Exhausted pool repeats");
 Check(
     GameService.ChooseQuestion(questions, new HashSet<int> { 1, 2 }, 1)?.Id == 3,
