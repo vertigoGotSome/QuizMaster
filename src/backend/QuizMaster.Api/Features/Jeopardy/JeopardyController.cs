@@ -77,6 +77,7 @@ public static class JeopardyController
                             item.Cell.BoardRound,
                             item.Cell.Category,
                             item.Cell.Value,
+                            item.Cell.Difficulty,
                             item.Slot,
                             state = plays.TryGetValue(item.Cell.Id, out var play)
                                 ? play.State
@@ -143,6 +144,10 @@ public static class JeopardyController
                     )
                         return Results.BadRequest(
                             "Every selected category needs five fields in this round."
+                        );
+                    if (selected.Any(slot => !HasProgressiveDifficulty(cells, slot)))
+                        return Results.BadRequest(
+                            "Every selected category needs five cells with strictly increasing difficulty."
                         );
                     var session = await db.Sessions.FirstAsync();
                     if (session.Game != "jeopardy" || session.Phase is not ("board" or "setup"))
@@ -285,6 +290,7 @@ public static class JeopardyController
                         .ToHashSet();
                     var inserted = 0;
                     var skipped = 0;
+                    var warnings = new HashSet<string>();
                     foreach (var item in items)
                     {
                         if (Validate(item) is not null)
@@ -292,6 +298,11 @@ public static class JeopardyController
                             skipped++;
                             continue;
                         }
+                        var expectedDifficulty = ExpectedDifficulty(item.Value, item.BoardRound);
+                        if (item.Difficulty != 0 && item.Difficulty != expectedDifficulty)
+                            warnings.Add(
+                                $"{item.Category} · {item.Value}: declared difficulty {item.Difficulty}, expected {expectedDifficulty}."
+                            );
                         Normalize(item);
                         var key =
                             $"{item.Board.ToUpperInvariant()}|{item.BoardRound}|{item.Category.ToUpperInvariant()}|{item.Value}";
@@ -305,7 +316,7 @@ public static class JeopardyController
                         inserted++;
                     }
                     await db.SaveChangesAsync();
-                    return Results.Ok(new { inserted, skipped });
+                    return Results.Ok(new { inserted, skipped, warnings = warnings.Order().ToArray() });
                 }
             )
             .RequireAuthorization()
@@ -668,6 +679,28 @@ public static class JeopardyController
         }
     }
 
+    /// <summary>Maps the visible board position to the 1–10 authoring difficulty scale.</summary>
+    private static int ExpectedDifficulty(int value, int boardRound)
+    {
+        var valueTier = Math.Clamp((int)Math.Ceiling(value / 100d), 1, 5);
+        return Math.Clamp(valueTier + (boardRound - 1) * 5, 1, 10);
+    }
+
+    /// <summary>Requires a category to become strictly more challenging down its visible column.</summary>
+    private static bool HasProgressiveDifficulty(
+        IEnumerable<JeopardyQuestion> cells,
+        JeopardyCategoryChoice slot
+    )
+    {
+        var ordered = cells
+            .Where(cell => cell.Board == slot.Board && cell.Category == slot.Category)
+            .OrderBy(cell => cell.Value)
+            .Take(5)
+            .ToArray();
+        return ordered.Length == 5
+            && ordered.Zip(ordered.Skip(1), (left, right) => left.Difficulty < right.Difficulty).All(x => x);
+    }
+
     private static string? Validate(JeopardyQuestion input)
     {
         if (
@@ -680,12 +713,13 @@ public static class JeopardyController
         if (
             input.BoardRound is < 1 or > 2
             || input.Value is < 50 or > 5000
+            || input.Difficulty is < 0 or > 10
             || string.IsNullOrWhiteSpace(input.Clue)
             || input.Clue.Length > 1600
             || string.IsNullOrWhiteSpace(input.Answer)
             || input.Answer.Length > 800
         )
-            return "Check round, value, clue and answer.";
+            return "Check round, value, difficulty, clue and answer.";
         if (
             input.ImageUrl.Length > 500
             || input.AcceptedAnswers.Length > 1000
@@ -699,6 +733,8 @@ public static class JeopardyController
     {
         input.Board = input.Board.Trim();
         input.Category = input.Category.Trim();
+        if (input.Difficulty == 0)
+            input.Difficulty = ExpectedDifficulty(input.Value, input.BoardRound);
         input.Clue = input.Clue.Trim();
         input.Answer = input.Answer.Trim();
         input.AcceptedAnswers = input.AcceptedAnswers.Trim();
