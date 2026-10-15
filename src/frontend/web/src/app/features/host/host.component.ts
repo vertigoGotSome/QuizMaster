@@ -31,6 +31,7 @@ export class HostComponent {
   selectedQuestion: number | null = null;
   selectedWord: number | null = null;
   manualPoints = 50;
+  manualScoreReason = '';
 
   /** Non-host accounts are the only participants shown in the moderation list. */
   players(): Player[] {
@@ -144,6 +145,32 @@ export class HostComponent {
     if (await this.command('host/clue', { playerId, clue: this.clue.trim() })) this.clue = '';
   }
 
+  /** Offers values derived from the active mode while retaining free-form host corrections. */
+  scorePresets(): { label: string; amount: number }[] {
+    const session = this.g.session();
+    if (!session) return [];
+
+    if (session.game === 'wwm') {
+      const roundValue = Math.max(1, Math.min(30, session.round || 1));
+      return [
+        { label: `WWM +${roundValue}`, amount: roundValue },
+        { label: `Risk �${roundValue * 2}`, amount: roundValue * 2 },
+      ];
+    }
+
+    if (session.game === 'jeopardy') {
+      const cell = this.g.state()?.jeopardy;
+      if (!cell) return [];
+      const value = cell.value * cell.boardRound;
+      return [
+        { label: `Cell ${value}`, amount: value },
+        { label: `Steal ${value / 2}`, amount: value / 2 },
+      ];
+    }
+
+    return [];
+  }
+
   /** Applies a manual points correction to the server-maintained score history. */
   points(player: Player, direction: 1 | -1): void {
     const amount = Math.floor(Number(this.manualPoints));
@@ -155,6 +182,7 @@ export class HostComponent {
     void this.command('host/points', {
       playerId: player.id,
       delta: Math.min(amount, 10000) * direction,
+      reason: this.manualScoreReason.trim() || undefined,
     });
   }
 

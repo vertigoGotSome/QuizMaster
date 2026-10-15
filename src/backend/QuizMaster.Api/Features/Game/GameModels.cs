@@ -28,7 +28,7 @@ public sealed record GameConfig(
 );
 
 /// <summary>Manual score correction entered by the host.</summary>
-public sealed record PointChange(int PlayerId, int Delta);
+public sealed record PointChange(int PlayerId, int Delta, string? Reason = null);
 
 /// <summary>Optional team assignment for a non-host participant.</summary>
 public sealed record TeamChange(int PlayerId, string? Team);

@@ -1537,6 +1537,16 @@ kbd {
 .score-adjustment input {
   width: 112px;
 }
+.score-adjustment-fields,
+.score-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: end;
+}
+.score-adjustment-fields label:last-child input {
+  width: min(260px, 100%);
+}
 .list-row.jeopardy-selector,
 .player.jeopardy-selector {
   border-color: #f0c55c !important;

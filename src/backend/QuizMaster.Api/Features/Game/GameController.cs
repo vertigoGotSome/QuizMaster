@@ -330,6 +330,9 @@ public static class GameController
                     if (request.Delta == 0)
                         return Results.BadRequest("Der Punktebetrag muss größer als null sein.");
                     var delta = Math.Clamp(request.Delta, -10000, 10000);
+                    var reason = string.IsNullOrWhiteSpace(request.Reason)
+                        ? "Host correction"
+                        : $"Host correction: {request.Reason.Trim()[..Math.Min(request.Reason.Trim().Length, 80)]}";
                     p.Points += delta;
                     db.ScoreEvents.Add(
                         new ScoreEvent
@@ -337,7 +340,7 @@ public static class GameController
                             Round = (await db.Sessions.FirstAsync()).Round,
                             PlayerId = p.Id,
                             Delta = delta,
-                            Reason = "Host correction",
+                            Reason = reason,
                         }
                     );
                     await db.SaveChangesAsync();
@@ -741,7 +744,11 @@ public static class GameController
                         );
                     await db.SaveChangesAsync();
                     await hub.Clients.All.SendAsync("changed");
-                    return Results.Ok(new { s.Round, s.Phase });
+                    return Results.Ok(new
+                    {
+                        s.Round,
+                        s.Phase
+                    });
                 }
             )
             .RequireAuthorization()
@@ -971,7 +978,10 @@ public static class GameController
                     session.Version++;
                     await db.SaveChangesAsync();
                     await hub.Clients.All.SendAsync("changed");
-                    return Results.Ok(new { questionId = replacement.Id });
+                    return Results.Ok(new
+                    {
+                        questionId = replacement.Id
+                    });
                 }
             )
             .RequireAuthorization()
@@ -1022,7 +1032,10 @@ public static class GameController
                     s.Version++;
                     await db.SaveChangesAsync();
                     await hub.Clients.All.SendAsync("changed");
-                    return Results.Ok(new { answers = answers.Count });
+                    return Results.Ok(new
+                    {
+                        answers = answers.Count
+                    });
                 }
             )
             .RequireAuthorization()
@@ -1114,7 +1127,10 @@ public static class GameController
                     await db.SaveChangesAsync();
                     await hub.Clients.All.SendAsync("changed");
                     if (input.Kind != "fifty")
-                        return Results.Ok(new { kind = input.Kind });
+                        return Results.Ok(new
+                        {
+                            kind = input.Kind
+                        });
                     return Results.Ok(
                         new
                         {
