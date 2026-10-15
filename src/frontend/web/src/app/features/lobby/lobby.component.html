@@ -1,0 +1,51 @@
+<!-- QuizMaster component view. UI state is supplied by its matching TypeScript component. -->
+<div class="heading">
+  <div>
+    <p class="eyebrow">LIVE LOBBY</p>
+    <h1>Warte auf den Host</h1>
+    <p>Angemeldete Freunde erscheinen automatisch.</p>
+  </div>
+  <span class="pill">{{ g.players().length }} / 7 Spieler</span>
+</div>
+@if (!g.me()) {
+  <div class="panel">
+    <p>Bitte melde dich über Discord an.</p>
+    <button (click)="g.login()">Mit Discord anmelden</button>
+  </div>
+} @else {
+  <div class="player-grid">
+    @for (p of g.players(); track p.id) {
+      <article class="player">
+        <div class="portrait">
+          @if (p.avatarUrl) {
+            <img [src]="p.avatarUrl" alt="" />
+          } @else {
+            <span>{{ p.name.charAt(0) }}</span>
+          }
+        </div>
+        <div class="player-name">
+          <span class="dot"> </span>{{ p.name }}
+
+          @if (p.isHost) {
+            <span class="pill">HOST</span>
+          }
+        </div>
+        @if (p.team) {
+          <div class="team-label">TEAM {{ p.team }}</div>
+        }
+      </article>
+    }
+  </div>
+  <div class="panel action">
+    <strong>{{
+      g.session()?.game === 'none' ? 'Noch kein Spiel ausgewählt' : g.session()?.game
+    }}</strong>
+    <span>Phase: {{ g.session()?.phase }}</span>
+    @if (g.session()?.game !== 'none' && g.session()?.phase !== 'lobby') {
+      <a class="btn" routerLink="/play">Zum Spiel →</a>
+    } @else {
+      <span class="note">Der Host startet die nächste Partie.</span>
+    }
+  </div>
+  <p class="note">Kamera ist freiwillig; Ton läuft weiter über Discord.</p>
+}

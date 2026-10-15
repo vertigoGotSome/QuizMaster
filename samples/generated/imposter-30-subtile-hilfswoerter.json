@@ -1,0 +1,152 @@
+[
+  {
+    "category": "Alltag",
+    "word": "Reifen",
+    "hint": "rund"
+  },
+  {
+    "category": "Alltag",
+    "word": "Toilettensitz",
+    "hint": "sauber"
+  },
+  {
+    "category": "Tiere",
+    "word": "Igel",
+    "hint": "leise"
+  },
+  {
+    "category": "Tiere",
+    "word": "Pinguin",
+    "hint": "elegant"
+  },
+  {
+    "category": "Tiere",
+    "word": "Kamel",
+    "hint": "Ausdauer"
+  },
+  {
+    "category": "Tiere",
+    "word": "Oktopus",
+    "hint": "neugierig"
+  },
+  {
+    "category": "Essen",
+    "word": "Pizza",
+    "hint": "geteilt"
+  },
+  {
+    "category": "Essen",
+    "word": "Sushi",
+    "hint": "klein"
+  },
+  {
+    "category": "Essen",
+    "word": "Kaffee",
+    "hint": "morgens"
+  },
+  {
+    "category": "Essen",
+    "word": "Popcorn",
+    "hint": "Film"
+  },
+  {
+    "category": "Technik",
+    "word": "Kopfhörer",
+    "hint": "privat"
+  },
+  {
+    "category": "Technik",
+    "word": "Tastatur",
+    "hint": "schnell"
+  },
+  {
+    "category": "Technik",
+    "word": "Fernbedienung",
+    "hint": "bequem"
+  },
+  {
+    "category": "Schule",
+    "word": "Radiergummi",
+    "hint": "Fehler"
+  },
+  {
+    "category": "Schule",
+    "word": "Lineal",
+    "hint": "gerade"
+  },
+  {
+    "category": "Orte",
+    "word": "Bahnhof",
+    "hint": "warten"
+  },
+  {
+    "category": "Orte",
+    "word": "Flughafen",
+    "hint": "Abschied"
+  },
+  {
+    "category": "Orte",
+    "word": "Schwimmbad",
+    "hint": "Sommer"
+  },
+  {
+    "category": "Sport",
+    "word": "Fußball",
+    "hint": "Team"
+  },
+  {
+    "category": "Sport",
+    "word": "Fahrrad",
+    "hint": "Balance"
+  },
+  {
+    "category": "Natur",
+    "word": "Regenbogen",
+    "hint": "kurz"
+  },
+  {
+    "category": "Natur",
+    "word": "Vulkan",
+    "hint": "Ruhe"
+  },
+  {
+    "category": "Kultur",
+    "word": "Kino",
+    "hint": "dunkel"
+  },
+  {
+    "category": "Kultur",
+    "word": "Museum",
+    "hint": "still"
+  },
+  {
+    "category": "Gaming",
+    "word": "Controller",
+    "hint": "Daumen"
+  },
+  {
+    "category": "Gaming",
+    "word": "Minecraft",
+    "hint": "kreativ"
+  },
+  {
+    "category": "Reisen",
+    "word": "Koffer",
+    "hint": "vorbereitet"
+  },
+  {
+    "category": "Reisen",
+    "word": "Landkarte",
+    "hint": "Richtung"
+  },
+  {
+    "category": "Musik",
+    "word": "Mikrofon",
+    "hint": "mutig"
+  },
+  {
+    "category": "Musik",
+    "word": "Gitarre",
+    "hint": "Saiten"
+  }
+]

@@ -1,0 +1,326 @@
+<!-- The server determines roles, correct answers, and scoring. Never infer secrets on the client. -->
+@if (!g.me()) {
+  <section class="panel"><button (click)="g.login()">Mit Discord anmelden</button></section>
+} @else if (!g.session() || g.session()?.game === 'none' || g.session()?.phase === 'lobby') {
+  <section class="panel center">
+    <h1>Warte auf den Host</h1>
+    <p>Das Spiel startet automatisch für alle.</p>
+  </section>
+} @else {
+  <div class="heading">
+    <h1>
+      {{
+        g.session()?.game === 'wwm'
+          ? 'WWM Quiz'
+          : g.session()?.game === 'jeopardy'
+            ? 'Jeopardy'
+            : 'Imposter'
+      }}
+    </h1>
+    <span class="pill">Runde {{ g.session()?.round }} · {{ g.session()?.phase }}</span>
+  </div>
+  @if (hostPlayer(); as host) {
+    <aside class="player-host-camera" aria-label="Host-Kamera">
+      <div>
+        <p class="eyebrow">MODERATION</p>
+        <strong>{{ host.name }}</strong
+        ><small>Host-Kamera</small>
+      </div>
+      <div class="player-host-camera-feed">
+        @if (host.id === g.me()?.id && camera.localStream(); as local) {
+          <video [cameraStream]="local" autoplay muted playsinline></video>
+        } @else if (remoteCamera(host.id); as remote) {
+          <video [cameraStream]="remote" autoplay muted playsinline></video>
+        } @else if (host.avatarUrl) {
+          <img [src]="host.avatarUrl" [alt]="host.name" />
+        } @else {
+          <span>{{ host.name.charAt(0) }}</span>
+        }
+      </div>
+    </aside>
+  }
+  @if (g.session()?.game === 'wwm') {
+    <section class="panel quiz wwm-stage" [class.wwm-reveal]="g.session()?.phase === 'reveal'">
+      @if (g.state()?.question; as q) {
+        <p class="eyebrow">FRAGE {{ g.session()?.round }} · {{ g.session()?.round }} PUNKTE</p>
+        <h2>{{ q.text }}</h2>
+        <div class="answer-grid">
+          @for (answer of answers(q); track answer.key) {
+            <button
+              class="wwm-answer"
+              [class.active]="selected() === answer.key"
+              [disabled]="
+                g.me()?.isHost ||
+                g.session()?.phase !== 'question' ||
+                !!g.state()?.myAnswer ||
+                (g.state()?.removedAnswers || []).includes(answer.key)
+              "
+              (click)="selected.set(answer.key)"
+            >
+              {{ answer.key }} ·
+              {{ (g.state()?.removedAnswers || []).includes(answer.key) ? '—' : answer.text }}
+            </button>
+          }
+        </div>
+        @if (g.me()?.isHost) {
+          <p>Du moderierst diese Partie. Antworten und Joker sind für Spieler vorgesehen.</p>
+        }
+        @if (g.session()?.phase === 'question' && !g.me()?.isHost) {
+          @if (g.state()?.myAnswer) {
+            <p>Antwort {{ g.state()?.myAnswer }} abgegeben · warte auf die anderen.</p>
+          } @else {
+            <button
+              class="confirm-answer"
+              [disabled]="!selected() || (g.state()?.removedAnswers || []).includes(selected())"
+              (click)="sendAnswer()"
+            >
+              Antwort bestätigen
+            </button>
+            <div class="joker-row">
+              <button
+                class="joker joker-fifty"
+                [disabled]="used('fifty') || !!g.state()?.roundJoker"
+                (click)="joker('fifty')"
+              >
+                <b>50</b><span>50/50</span>
+              </button>
+              <button
+                class="joker joker-spy"
+                [disabled]="used('spy') || !!g.state()?.roundJoker"
+                (click)="joker('spy')"
+              >
+                <b>◉</b><span>Spy</span>
+              </button>
+              <button
+                class="joker joker-risk"
+                [disabled]="used('risk') || !!g.state()?.roundJoker"
+                (click)="joker('risk')"
+              >
+                <b>×2</b><span>Risk</span>
+              </button>
+            </div>
+          }
+        }
+        @if (g.state()?.roundJoker === 'spy') {
+          <div class="spy-results">
+            <p>Spy:</p>
+            @for (response of g.state()?.spy || []; track response.playerId) {
+              <p>{{ playerName(response.playerId) }}: {{ response.answer }}</p>
+            } @empty {
+              <p>Noch keine Antworten anderer Spieler vorhanden.</p>
+            }
+          </div>
+        }
+        @if (q.correct) {
+          <h3>Richtig: {{ q.correct }}</h3>
+        }
+      } @else {
+        <p>Warte auf die nächste Frage.</p>
+      }
+    </section>
+  } @else if (g.session()?.game === 'jeopardy') {
+    <section class="panel jeopardy-play">
+      @if (!g.state()?.jeopardy) {
+        <p class="eyebrow">JEOPARDY</p>
+        <h2>{{ jeopardyBoardFinished() ? 'Board beendet' : 'Warte auf die nächste Frage.' }}</h2>
+        @if (jeopardyBoardFinished()) {
+          <p class="note">Warte, bis der Host das nächste Board zusammengestellt hat.</p>
+        }
+      }
+      <div class="jeopardy-board player-board" [class.board-dimmed]="!!g.state()?.jeopardy">
+        @for (category of jeopardyCategories(); track category) {
+          <div class="jeopardy-column">
+            <strong>{{ category }}</strong>
+            @for (cell of jeopardyCells(category); track cell.id) {
+              <span [class.played]="cell.state !== 'available'">{{
+                cell.value * cell.boardRound
+              }}</span>
+            }
+          </div>
+        }
+      </div>
+      @if (g.state()?.jeopardy; as clue) {
+        <div class="question-overlay">
+          <article class="question-dialog">
+            <p class="eyebrow">{{ clue.category }} · {{ clue.value }} PUNKTE</p>
+            <h2>{{ clue.clue }}</h2>
+            @if (clue.imageUrl) {
+              <a [href]="clue.imageUrl" target="_blank" rel="noopener"
+                ><img class="question-image" [src]="clue.imageUrl" alt="Fragenbild"
+              /></a>
+            }
+            <p class="jeopardy-turn">
+              AM ZUG: <strong>{{ playerName(clue.contestantId) }}</strong>
+              @if (playerTeam(clue.contestantId)) {
+                <small>TEAM {{ playerTeam(clue.contestantId) }}</small>
+              }
+            </p>
+            @if (clue.state === 'steal') {
+              @if (canBuzz()) {
+                <button class="buzzer" [disabled]="buzzing()" (click)="buzz()">
+                  BUZZERN <small>Leertaste</small>
+                </button>
+              } @else if (clue.stealContestantId) {
+                <p class="steal-banner">Ein Spieler hat zuerst gebuzzert.</p>
+              } @else {
+                <p class="steal-banner">Steal offen.</p>
+              }
+            }
+            @if (timerLabel(clue.timerEndsUtc)) {
+              <p class="timer-display">{{ timerLabel(clue.timerEndsUtc) }}</p>
+            }
+            <p class="note">Antworten werden im Discord gegeben; der Host entscheidet.</p>
+          </article>
+        </div>
+      }
+    </section>
+  } @else {
+    <section
+      class="imposter-top-banner"
+      [class.imposter-top-banner--imposter]="g.state()?.role === 'imposter'"
+    >
+      <span>{{ g.state()?.role === 'imposter' ? '◈ IMPOSTER' : '✦ CREWMATE' }}</span>
+      <small>{{
+        g.session()?.phase === 'vote'
+          ? 'Abstimmung läuft'
+          : 'Hinweise sammeln, ohne das Wort zu verraten'
+      }}</small>
+    </section>
+    <section
+      class="panel imposter-role-card"
+      [class.imposter-role-card--imposter]="g.state()?.role === 'imposter'"
+    >
+      <p class="eyebrow">DEINE ROLLE · NUR FÜR DICH</p>
+      @if (g.state()?.role) {
+        <div class="role-emblem">{{ g.state()?.role === 'imposter' ? '◈' : '✦' }}</div>
+        <h2>{{ g.state()?.role === 'imposter' ? 'IMPOSTER' : 'CREWMATE' }}</h2>
+        <p class="role-copy">
+          {{
+            g.state()?.role === 'imposter'
+              ? 'Finde das geheime Wort, ohne dich zu verraten.'
+              : 'Gib Hinweise, aber verrate das Wort nicht direkt.'
+          }}
+        </p>
+        <div class="secret-word">
+          <span>{{ g.state()?.role === 'imposter' ? 'HILFSWORT' : 'GEHEIMES WORT' }}</span
+          ><strong>{{ g.state()?.privateWord || 'Kein Wort' }}</strong>
+        </div>
+      } @else {
+        <p>Du moderierst diese Runde.</p>
+      }
+    </section>
+    <section class="panel imposter-round-card">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">HINWEISPHASE</p>
+          <h3>Runde {{ g.state()?.cluePass || 1 }} von 2</h3>
+        </div>
+        <span class="pill">{{ g.session()?.phase === 'vote' ? 'ABSTIMMUNG' : 'HINWEISE' }}</span>
+      </div>
+      <p class="turn-callout">
+        <span>AM ZUG</span><strong>{{ speakerName() }}</strong>
+      </p>
+      <div class="turn-order">
+        @for (id of g.state()?.speakerOrder || []; track id) {
+          <span [class.current-turn]="g.state()?.currentSpeakerId === id"
+            >{{ playerName(id) }}<i>{{ $index + 1 }}</i></span
+          >
+        }
+      </div>
+    </section>
+    @if (g.session()?.phase === 'vote' && g.state()?.role) {
+      <section class="panel imposter-vote-card">
+        <p class="eyebrow">ENTSCHEIDUNG</p>
+        <h2>Wer ist der Imposter?</h2>
+        <p class="note">Wähle einen Spieler. Deine Stimme bleibt bis zur Auflösung geheim.</p>
+        <div class="suspect-grid">
+          @for (player of g.players(); track player.id) {
+            @if (g.state()?.participants?.includes(player.id) && player.id !== g.me()?.id) {
+              <button
+                [class.active]="voteChoice() === player.id"
+                (click)="voteChoice.set(player.id)"
+              >
+                <span>{{ player.name.charAt(0) }}</span
+                >{{ player.name }}
+              </button>
+            }
+          }
+        </div>
+        <button class="vote-confirm" [disabled]="voteChoice() === null" (click)="vote()">
+          Stimme verbindlich abgeben
+        </button>
+        @if (g.state()?.myVote != null) {
+          <p class="vote-saved">✓ Stimme gespeichert</p>
+        }
+      </section>
+    }
+    @if (g.session()?.phase === 'reveal') {
+      <section class="panel imposter-reveal">
+        <p class="eyebrow">AUFLÖSUNG</p>
+        <h2>
+          Das Wort war: <strong>{{ g.state()?.revealedWord }}</strong>
+        </h2>
+        <div class="reveal-roles">
+          @for (role of g.state()?.revealedRoles || []; track role.playerId) {
+            <p [class.revealed-imposter]="role.isImposter">
+              <span>{{ role.isImposter ? '◈' : '✦' }}</span
+              >{{ playerName(role.playerId) }}<b>{{ role.isImposter ? 'IMPOSTER' : 'CREWMATE' }}</b>
+            </p>
+          }
+        </div>
+      </section>
+    }
+  }
+  <section class="panel inline camera-controls">
+    <button type="button" (click)="camera.enabled() ? camera.disable() : camera.enable()">
+      {{ camera.enabled() ? 'Kamera ausschalten' : 'Kamera einschalten' }}
+    </button>
+    <span class="note">Ton läuft über Discord · Video freiwillig</span>
+    @if (camera.error()) {
+      <p class="note">{{ camera.error() }}</p>
+    }
+  </section>
+  <div class="player-grid" [class.imposter-player-ring]="g.session()?.game === 'imposter'">
+    @for (player of gamePlayers(); track player.id) {
+      <article
+        class="player compact"
+        [class.active]="g.state()?.currentSpeakerId === player.id"
+        [class.jeopardy-active]="g.state()?.jeopardy?.contestantId === player.id"
+        [class.jeopardy-selector]="isJeopardySelector(player.id)"
+      >
+        <div class="portrait">
+          @if (player.id === g.me()?.id && camera.localStream(); as local) {
+            <video [cameraStream]="local" autoplay muted playsinline></video>
+          } @else if (remoteCamera(player.id); as remote) {
+            <video [cameraStream]="remote" autoplay muted playsinline></video>
+          } @else {
+            @if (player.avatarUrl) {
+              <img [src]="player.avatarUrl" [alt]="player.name" />
+            } @else {
+              <span>{{ player.name.charAt(0) }}</span>
+            }
+          }
+        </div>
+        <div class="player-name">
+          <span>{{ player.name }}</span
+          ><strong>{{ player.points }} P</strong>
+        </div>
+        @if (player.team) {
+          <div class="team-label">TEAM {{ player.team }}</div>
+        }
+        @if (g.session()?.game === 'imposter') {
+          <div class="player-clues">
+            @for (clue of g.state()?.clues || []; track $index) {
+              @if (clue.playerId === player.id) {
+                <span class="clue-chip">{{ clue.pass }}. {{ clue.clue }}</span>
+              }
+            }
+          </div>
+        }
+      </article>
+    }
+  </div>
+  @if (error()) {
+    <p class="note">{{ error() }}</p>
+  }
+}

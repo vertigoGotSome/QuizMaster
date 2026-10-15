@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.6887863">
+  <PropertyGroup>
+    <!-- Install dependencies explicitly using npm install; avoid hidden network calls during dotnet restore. -->
+    <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <StartupCommand>npm start</StartupCommand>
+    <BuildCommand>npm run build</BuildCommand>
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\web\browser</BuildOutputFolder>
+    <StartupCommandWorkingDirectory>$(MSBuildProjectDirectory)</StartupCommandWorkingDirectory>
+  </PropertyGroup>
+</Project>

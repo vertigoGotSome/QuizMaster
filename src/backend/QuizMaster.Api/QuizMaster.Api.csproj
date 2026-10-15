@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>QuizMaster.LocalDev</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <ProjectReference Include="../QuizMaster.Data/QuizMaster.Data.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,13 @@
+<Solution>
+    <Folder Name="/src/" />
+    <Folder Name="/src/backend/">
+        <Project Path="src/backend/QuizMaster.Api/QuizMaster.Api.csproj" />
+        <Project Path="src/backend/QuizMaster.Data/QuizMaster.Data.csproj" />
+    </Folder>
+    <Folder Name="/src/frontend/">
+        <Project Path="src/frontend/web/QuizMaster.Web.esproj">
+            <Build />
+            <Deploy />
+        </Project>
+    </Folder>
+</Solution>

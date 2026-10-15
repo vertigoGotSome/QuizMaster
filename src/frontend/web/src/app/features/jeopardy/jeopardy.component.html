@@ -1,0 +1,151 @@
+<section class="panel jeopardy">
+  <div class="section-title">
+    <div>
+      <p class="eyebrow">JEOPARDY</p>
+      <h2>Tafel & Moderation</h2>
+    </div>
+    <span class="pill">{{ g.jeopardyCells().length }} Felder</span>
+  </div>
+  @if (!active() && (!configured() || boardFinished())) {
+    <div class="jeopardy-setup">
+      <div>
+        <p class="eyebrow">{{ boardFinished() ? 'BOARD BEENDET' : 'RUNDE EINRICHTEN' }}</p>
+        <h3>
+          {{
+            boardFinished()
+              ? 'Nächstes Board zusammenstellen'
+              : 'Sechs Kategorien von links nach rechts wählen'
+          }}
+        </h3>
+        <p class="note">Die Felder werden automatisch in steigender Punktzahl angeordnet.</p>
+      </div>
+      <label
+        >Runde
+        <select [(ngModel)]="setupRound">
+          <option [ngValue]="1">Runde 1 · 100 bis 500</option>
+          <option [ngValue]="2">Runde 2 · Werte ×2</option>
+        </select></label
+      >
+      <div class="jeopardy-slot-grid">
+        @for (slot of slots; track $index) {
+          <label
+            >Spalte {{ $index + 1
+            }}<select [ngModel]="slotKey($index)" (ngModelChange)="setSlot($index, $event)">
+              <option value="">Kategorie wählen</option>
+              @for (item of catalog(); track categoryKey(item)) {
+                <option [value]="categoryKey(item)" [disabled]="unavailable(item, $index)">
+                  {{ item.category }} <small>· {{ item.board }}</small>
+                </option>
+              }
+            </select></label
+          >
+        }
+      </div>
+      <button [disabled]="busy()" (click)="configure()">
+        Tafel für Runde {{ setupRound }} starten
+      </button>
+    </div>
+  }
+  <div class="inline jeopardy-next-turn">
+    @if (!active() && configured()) {
+      <span class="turn-badge"
+        ><span>AM ZUG · FELD AUSWÄHLEN</span><strong>{{ nextPlayerName() }}</strong>
+        @if (nextPlayerTeam()) {
+          <small>TEAM {{ nextPlayerTeam() }}</small>
+        }
+      </span>
+    }
+    <span class="note"
+      >Der markierte Spieler nennt Kategorie und Punktwert; der Host öffnet das Feld.</span
+    >
+    <button class="small" (click)="g.refresh()">Aktualisieren</button>
+  </div>
+
+  <div
+    class="jeopardy-board host-board"
+    [class.empty-board]="!configured()"
+    [class.board-dimmed]="!!active()"
+  >
+    @for (category of categories(); track category) {
+      <div class="jeopardy-column">
+        <strong>{{ category }}</strong>
+        @for (q of values(category); track q.id) {
+          <button [disabled]="isPlayed(q.id) || busy()" (click)="open(q)">
+            {{ shownValue(q) }}
+          </button>
+        }
+      </div>
+    } @empty {
+      <p class="note">Die sechs Kategorien einrichten, dann erscheint die Spieltafel hier.</p>
+    }
+  </div>
+  @if (active()) {
+    <div class="question-overlay host-question-overlay">
+      <div class="active-jeopardy question-dialog host-question-dialog" aria-live="polite">
+        <p class="eyebrow">{{ active()?.category }} · {{ active()?.value }} Punkte</p>
+        <h3>{{ active()?.clue }}</h3>
+        @if (active()?.imageUrl) {
+          <img class="question-image" [src]="active()?.imageUrl" alt="Fragenbild" />
+        }
+        <details open>
+          <summary>Host-Lösung und Notizen</summary>
+          <p>
+            <strong>{{ active()?.answer }}</strong>
+          </p>
+          <p>Akzeptiert: {{ active()?.acceptedAnswers || '—' }}</p>
+          <p class="note">{{ active()?.hostNotes || 'Keine Moderationsnotiz.' }}</p>
+        </details>
+        <p class="jeopardy-turn">
+          AM ZUG: <strong>{{ playerName(active()?.contestantId ?? null) }}</strong>
+          @if (playerTeam(active()?.contestantId ?? null)) {
+            <small>TEAM {{ playerTeam(active()?.contestantId ?? null) }}</small>
+          }
+        </p>
+        @if (active()?.state === 'question') {
+          <div class="moderation-actions">
+            <button class="decision-correct" [disabled]="busy()" (click)="correct()">
+              ✓ Richtig <small>+{{ active()?.value }} Punkte</small></button
+            ><button class="decision-wrong" [disabled]="busy()" (click)="wrong()">
+              × Falsch <small>−{{ (active()?.value || 0) / 2 }} · Steal öffnen</small>
+            </button>
+          </div>
+        }
+        @if (active()?.state === 'steal') {
+          @if (active()?.stealContestantId) {
+            <p class="steal-picked">
+              <strong>{{ playerName(active()?.stealContestantId ?? null) }}</strong> war zuerst am
+              Buzzer.
+            </p>
+            <div class="moderation-actions">
+              <button class="decision-correct" [disabled]="busy()" (click)="stealCorrect()">
+                ✓ Steal richtig <small>+{{ (active()?.value || 0) / 2 }}</small></button
+              ><button class="decision-wrong" [disabled]="busy()" (click)="stealWrong()">
+                × Steal falsch <small>−{{ (active()?.value || 0) / 2 }}</small>
+              </button>
+            </div>
+          } @else {
+            <p class="steal-waiting">
+              Steal ist offen. Die Spieler können per Buzzer oder <kbd>Leertaste</kbd> übernehmen.
+            </p>
+          }
+          <div class="inline">
+            <button class="muted" [disabled]="busy()" (click)="close()">
+              Niemand stiehlt · Frage schließen
+            </button>
+          </div>
+        }
+        <div class="inline timer-controls">
+          <button class="small" [disabled]="busy()" (click)="timer(30)">30 s Timer</button
+          ><button class="small muted" [disabled]="busy()" (click)="timer(null)">
+            Timer stoppen</button
+          ><button class="small muted" [disabled]="busy()" (click)="close(true)">
+            Frage überspringen
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+  @if (notice()) {
+    <p role="status" class="note">{{ notice() }}</p>
+  }
+</section>

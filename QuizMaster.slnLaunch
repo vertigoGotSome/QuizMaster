@@ -1,0 +1,24 @@
+[
+  {
+    "Name": "Backend Only",
+    "Projects": [
+      {
+        "Path": "src\\backend\\QuizMaster.Api\\QuizMaster.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "Server + Client",
+    "Projects": [
+      {
+        "Path": "src\\backend\\QuizMaster.Api\\QuizMaster.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\frontend\\web\\QuizMaster.Web.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,53 @@
+<!-- QuizMaster component view. UI state is supplied by its matching TypeScript component. -->
+<section class="home">
+  <div>
+    <p class="eyebrow">PRIVATE GAME NIGHT</p>
+    <h1>
+      Eine Lobby.<br />
+      <em>Eure Spiele.</em>
+    </h1>
+    <p>Imposter, WWM und Jeopardy – für deine Freundesrunde.</p>
+    @if (g.me()) {
+      <a class="btn" routerLink="/lobby">Zur Lobby →</a>
+    } @else {
+      <button class="btn" (click)="g.login()">Mit Discord anmelden →</button>
+    }
+  </div>
+  <div class="panel showcase">
+    <p class="eyebrow">AKTUELLE RUNDE</p>
+    <h2>
+      {{
+        g.session()?.game === 'imposter'
+          ? 'Imposter'
+          : g.session()?.game === 'wwm'
+            ? 'WWM Quiz'
+            : 'Wartet auf den Host'
+      }}
+    </h2>
+    <p>{{ g.players().length }} Spieler online</p>
+    <div class="avatars">
+      @for (p of g.players(); track p.id) {
+        <div class="avatar">
+          @if (p.avatarUrl) {
+            <img [src]="p.avatarUrl" alt="" />
+          } @else {
+            <span>{{ p.name.charAt(0) }}</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+@if (g.me()?.isHost) {
+  <section class="games">
+    <a class="game-tile" routerLink="/host">
+      <b>Imposter</b>
+      <span>Das geheime Wort</span>
+    </a>
+    <a class="game-tile blue" routerLink="/host">
+      <b>WWM Quiz</b>
+      <span>30 Fragen · 3 Joker</span>
+    </a>
+    <a class="game-tile" routerLink="/host"><b>Jeopardy</b><span>Moderierte Tafel</span></a>
+  </section>
+}

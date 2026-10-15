@@ -1,0 +1,42 @@
+[
+  {
+    "category": "Gaming",
+    "word": "Minecraft",
+    "hint": "Terraria"
+  },
+  {
+    "category": "Essen",
+    "word": "Pizza",
+    "hint": "Flammkuchen"
+  },
+  {
+    "category": "Technik",
+    "word": "Grafikkarte",
+    "hint": "Prozessor"
+  },
+  {
+    "category": "Alltag",
+    "word": "Flughafen",
+    "hint": "Bahnhof"
+  },
+  {
+    "category": "Unterhaltung",
+    "word": "Netflix",
+    "hint": "Disney+"
+  },
+  {
+    "category": "Tiere",
+    "word": "Delfin",
+    "hint": "Hai"
+  },
+  {
+    "category": "Orte",
+    "word": "Bibliothek",
+    "hint": "Buchhandlung"
+  },
+  {
+    "category": "Sport",
+    "word": "Basketball",
+    "hint": "Handball"
+  }
+]

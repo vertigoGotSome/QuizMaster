@@ -1,0 +1,60 @@
+@if (!game.me()?.isHost) {
+  <section class="panel">Nur für den Host.</section>
+} @else {
+  <div class="heading">
+    <div>
+      <p class="eyebrow">ADMIN STORAGE</p>
+      <h1>Inhalte verwalten</h1>
+    </div>
+    <span class="pill">JSON · Import / Export</span>
+  </div>
+  <section class="panel">
+    <h2>Inhalt auswählen</h2>
+    <div class="inline">
+      <select [ngModel]="kind" (ngModelChange)="onKindChange($event)">
+        <option value="words">Imposter-Wörter</option>
+        <option value="questions">WWM-Fragen</option>
+        <option value="jeopardy">Jeopardy-Felder</option>
+      </select>
+      <button (click)="load()">Aktualisieren</button>
+      <button (click)="export()">JSON exportieren</button>
+      <button class="small danger" (click)="clearAll()">
+        {{
+          kind === 'words'
+            ? 'Alle Wörter löschen'
+            : kind === 'jeopardy'
+              ? 'Alle Jeopardy-Felder löschen'
+              : 'Alle WWM-Fragen löschen'
+        }}
+      </button>
+    </div>
+  </section>
+  <section class="panel" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
+    <h2>JSON importieren</h2>
+    <p class="note">
+      JSON-Datei hier ablegen oder auswählen. Doppelte Fragen/Wörter werden übersprungen.
+    </p>
+    <input type="file" accept="application/json,.json" (change)="onFile($event)" />
+    <textarea
+      rows="11"
+      [(ngModel)]="text"
+      spellcheck="false"
+      style="width: 100%; margin: 1rem 0; font-family: monospace"
+    ></textarea>
+    <button (click)="import()">Import prüfen und speichern</button>
+    @if (message()) {
+      <p role="status">{{ message() }}</p>
+    }
+  </section>
+  <section class="panel">
+    <h2>Gespeicherte Einträge ({{ items().length }})</h2>
+    @for (item of items(); track item['id']) {
+      <div class="list-row">
+        <span>{{ item['category'] }} · {{ item['word'] || item['text'] || item['clue'] }}</span>
+        <button class="small muted" (click)="remove($any(item['id']))">Löschen</button>
+      </div>
+    } @empty {
+      <p class="note">Noch keine geladenen Einträge.</p>
+    }
+  </section>
+}

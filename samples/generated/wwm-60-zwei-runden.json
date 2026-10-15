@@ -1,0 +1,602 @@
+[
+  {
+    "category": "Sprichwörter",
+    "difficulty": 1,
+    "text": "Wie endet das Sprichwort: „Ende gut, ...“?",
+    "answerA": "alles gut",
+    "answerB": "Ende besser",
+    "answerC": "Glück gehabt",
+    "answerD": "weiter so",
+    "correct": "A"
+  },
+  {
+    "category": "Alltag",
+    "difficulty": 1,
+    "text": "Welche Farbe entsteht aus Blau und Gelb?",
+    "answerA": "Rot",
+    "answerB": "Grün",
+    "answerC": "Lila",
+    "answerD": "Orange",
+    "correct": "B"
+  },
+  {
+    "category": "Sprichwörter",
+    "difficulty": 2,
+    "text": "Wer anderen eine Grube gräbt, ...",
+    "answerA": "fällt selbst hinein",
+    "answerB": "gewinnt immer",
+    "answerC": "baut ein Haus",
+    "answerD": "hat Glück",
+    "correct": "A"
+  },
+  {
+    "category": "Alltag",
+    "difficulty": 2,
+    "text": "Wie viele Tage hat ein Wochenende?",
+    "answerA": "1",
+    "answerB": "2",
+    "answerC": "3",
+    "answerD": "4",
+    "correct": "B"
+  },
+  {
+    "category": "Tiere",
+    "difficulty": 3,
+    "text": "Welches Tier legt typischerweise Eier?",
+    "answerA": "Katze",
+    "answerB": "Hund",
+    "answerC": "Huhn",
+    "answerD": "Pferd",
+    "correct": "C"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 3,
+    "text": "In welchem Land liegt Berlin?",
+    "answerA": "Österreich",
+    "answerB": "Deutschland",
+    "answerC": "Schweiz",
+    "answerD": "Belgien",
+    "correct": "B"
+  },
+  {
+    "category": "Sprache",
+    "difficulty": 4,
+    "text": "Welches Wort ist ein Synonym für „fröhlich“?",
+    "answerA": "heiter",
+    "answerB": "müde",
+    "answerC": "leise",
+    "answerD": "streng",
+    "correct": "A"
+  },
+  {
+    "category": "Alltag",
+    "difficulty": 4,
+    "text": "Womit misst man gewöhnlich die Zeit?",
+    "answerA": "Thermometer",
+    "answerB": "Uhr",
+    "answerC": "Lineal",
+    "answerD": "Waage",
+    "correct": "B"
+  },
+  {
+    "category": "Natur",
+    "difficulty": 5,
+    "text": "Welche Jahreszeit folgt auf den Frühling?",
+    "answerA": "Herbst",
+    "answerB": "Winter",
+    "answerC": "Sommer",
+    "answerD": "Montag",
+    "correct": "C"
+  },
+  {
+    "category": "Essen",
+    "difficulty": 5,
+    "text": "Welches davon ist eine Frucht?",
+    "answerA": "Kartoffel",
+    "answerB": "Apfel",
+    "answerC": "Brot",
+    "answerD": "Käse",
+    "correct": "B"
+  },
+  {
+    "category": "Tiere",
+    "difficulty": 6,
+    "text": "Wie nennt man ein männliches Pferd?",
+    "answerA": "Hengst",
+    "answerB": "Bulle",
+    "answerC": "Widder",
+    "answerD": "Fohlen",
+    "correct": "A"
+  },
+  {
+    "category": "Sport",
+    "difficulty": 6,
+    "text": "Wie viele Spieler stehen in einem Fußballteam normalerweise gleichzeitig auf dem Feld?",
+    "answerA": "7",
+    "answerB": "9",
+    "answerC": "11",
+    "answerD": "13",
+    "correct": "C"
+  },
+  {
+    "category": "Kultur",
+    "difficulty": 7,
+    "text": "Wer malte die Mona Lisa?",
+    "answerA": "Vincent van Gogh",
+    "answerB": "Leonardo da Vinci",
+    "answerC": "Pablo Picasso",
+    "answerD": "Claude Monet",
+    "correct": "B"
+  },
+  {
+    "category": "Natur",
+    "difficulty": 7,
+    "text": "Welcher Planet ist als roter Planet bekannt?",
+    "answerA": "Venus",
+    "answerB": "Mars",
+    "answerC": "Jupiter",
+    "answerD": "Neptun",
+    "correct": "B"
+  },
+  {
+    "category": "Deutschland",
+    "difficulty": 8,
+    "text": "Welcher Fluss fließt durch Köln?",
+    "answerA": "Elbe",
+    "answerB": "Donau",
+    "answerC": "Rhein",
+    "answerD": "Oder",
+    "correct": "C"
+  },
+  {
+    "category": "Musik",
+    "difficulty": 8,
+    "text": "Wie viele Saiten hat eine klassische Gitarre üblicherweise?",
+    "answerA": "4",
+    "answerB": "5",
+    "answerC": "6",
+    "answerD": "8",
+    "correct": "C"
+  },
+  {
+    "category": "Wissenschaft",
+    "difficulty": 9,
+    "text": "Welches Gas atmen Menschen zum Überleben ein?",
+    "answerA": "Sauerstoff",
+    "answerB": "Helium",
+    "answerC": "Wasserstoff",
+    "answerD": "Kohlendioxid",
+    "correct": "A"
+  },
+  {
+    "category": "Film",
+    "difficulty": 9,
+    "text": "Wie heißt die Schule in Harry Potter?",
+    "answerA": "Narnia",
+    "answerB": "Hogwarts",
+    "answerC": "Mittelerde",
+    "answerD": "Westeros",
+    "correct": "B"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 10,
+    "text": "In welchem Jahr fiel die Berliner Mauer?",
+    "answerA": "1979",
+    "answerB": "1989",
+    "answerC": "1999",
+    "answerD": "2009",
+    "correct": "B"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 10,
+    "text": "Welche Hauptstadt gehört zu Kanada?",
+    "answerA": "Toronto",
+    "answerB": "Vancouver",
+    "answerC": "Ottawa",
+    "answerD": "Montreal",
+    "correct": "C"
+  },
+  {
+    "category": "Wissenschaft",
+    "difficulty": 11,
+    "text": "Welches Element trägt das Symbol Au?",
+    "answerA": "Silber",
+    "answerB": "Gold",
+    "answerC": "Argon",
+    "answerD": "Aluminium",
+    "correct": "B"
+  },
+  {
+    "category": "Literatur",
+    "difficulty": 11,
+    "text": "Wer schrieb „Romeo und Julia“?",
+    "answerA": "Goethe",
+    "answerB": "Shakespeare",
+    "answerC": "Kafka",
+    "answerD": "Schiller",
+    "correct": "B"
+  },
+  {
+    "category": "Sport",
+    "difficulty": 12,
+    "text": "In welcher Sportart gibt es einen Grand Slam in Wimbledon?",
+    "answerA": "Golf",
+    "answerB": "Tennis",
+    "answerC": "Boxen",
+    "answerD": "Handball",
+    "correct": "B"
+  },
+  {
+    "category": "Politik",
+    "difficulty": 12,
+    "text": "Wie heißt das deutsche Parlament?",
+    "answerA": "Bundestag",
+    "answerB": "Landtag",
+    "answerC": "Reichstag",
+    "answerD": "Stadtrat",
+    "correct": "A"
+  },
+  {
+    "category": "Natur",
+    "difficulty": 13,
+    "text": "Wie heißt die größte Wüste der Erde?",
+    "answerA": "Sahara",
+    "answerB": "Gobi",
+    "answerC": "Antarktis",
+    "answerD": "Kalahari",
+    "correct": "C"
+  },
+  {
+    "category": "Technik",
+    "difficulty": 13,
+    "text": "Wofür steht die Abkürzung CPU?",
+    "answerA": "Computer Processing Unit",
+    "answerB": "Central Processing Unit",
+    "answerC": "Control Power Unit",
+    "answerD": "Central Program Utility",
+    "correct": "B"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 14,
+    "text": "Welche antike Stadt wurde 79 n. Chr. vom Vesuv verschüttet?",
+    "answerA": "Troja",
+    "answerB": "Pompeji",
+    "answerC": "Sparta",
+    "answerD": "Alexandria",
+    "correct": "B"
+  },
+  {
+    "category": "Kunst",
+    "difficulty": 14,
+    "text": "Welche Kunstrichtung prägte Salvador Dalí?",
+    "answerA": "Kubismus",
+    "answerB": "Surrealismus",
+    "answerC": "Impressionismus",
+    "answerD": "Barock",
+    "correct": "B"
+  },
+  {
+    "category": "Biologie",
+    "difficulty": 15,
+    "text": "Welcher Teil einer Zelle enthält überwiegend die Erbinformation?",
+    "answerA": "Zellkern",
+    "answerB": "Zellwand",
+    "answerC": "Vakuole",
+    "answerD": "Ribosom",
+    "correct": "A"
+  },
+  {
+    "category": "Musik",
+    "difficulty": 15,
+    "text": "Wer wird oft „King of Pop“ genannt?",
+    "answerA": "Elvis Presley",
+    "answerB": "Michael Jackson",
+    "answerC": "Prince",
+    "answerD": "David Bowie",
+    "correct": "B"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 16,
+    "text": "Welcher Staat hat die längste Küstenlinie der Welt?",
+    "answerA": "Australien",
+    "answerB": "Kanada",
+    "answerC": "Indonesien",
+    "answerD": "Russland",
+    "correct": "B"
+  },
+  {
+    "category": "Wissenschaft",
+    "difficulty": 16,
+    "text": "Wie lautet die chemische Formel von Kochsalz?",
+    "answerA": "NaCl",
+    "answerB": "H2O",
+    "answerC": "CO2",
+    "answerD": "O2",
+    "correct": "A"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 17,
+    "text": "Welcher Vertrag beendete 1919 formal den Ersten Weltkrieg?",
+    "answerA": "Vertrag von Versailles",
+    "answerB": "Münchner Abkommen",
+    "answerC": "Potsdamer Abkommen",
+    "answerD": "NATO-Vertrag",
+    "correct": "A"
+  },
+  {
+    "category": "Literatur",
+    "difficulty": 17,
+    "text": "Von wem stammt der Roman „Der Prozess“?",
+    "answerA": "Thomas Mann",
+    "answerB": "Franz Kafka",
+    "answerC": "Bertolt Brecht",
+    "answerD": "Hermann Hesse",
+    "correct": "B"
+  },
+  {
+    "category": "Astronomie",
+    "difficulty": 18,
+    "text": "Wie heißt der größte Mond des Saturn?",
+    "answerA": "Europa",
+    "answerB": "Titan",
+    "answerC": "Io",
+    "answerD": "Triton",
+    "correct": "B"
+  },
+  {
+    "category": "Wirtschaft",
+    "difficulty": 18,
+    "text": "Welche Institution gibt in Deutschland Banknoten aus?",
+    "answerA": "Bundesbank im Eurosystem",
+    "answerB": "Finanzamt",
+    "answerC": "Bundestag",
+    "answerD": "Sparkasse",
+    "correct": "A"
+  },
+  {
+    "category": "Biologie",
+    "difficulty": 19,
+    "text": "Welche Blutgruppe gilt als Universalspender für rote Blutkörperchen?",
+    "answerA": "AB positiv",
+    "answerB": "A negativ",
+    "answerC": "0 negativ",
+    "answerD": "B positiv",
+    "correct": "C"
+  },
+  {
+    "category": "Kunst",
+    "difficulty": 19,
+    "text": "Welcher Künstler schuf „Die Sternennacht“?",
+    "answerA": "Claude Monet",
+    "answerB": "Vincent van Gogh",
+    "answerC": "Edvard Munch",
+    "answerD": "Paul Cézanne",
+    "correct": "B"
+  },
+  {
+    "category": "Physik",
+    "difficulty": 20,
+    "text": "Welche Einheit misst elektrische Spannung?",
+    "answerA": "Watt",
+    "answerB": "Volt",
+    "answerC": "Ohm",
+    "answerD": "Ampere",
+    "correct": "B"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 20,
+    "text": "Welcher Pharao ist mit einem nahezu unberührten Grabfund verbunden?",
+    "answerA": "Tutanchamun",
+    "answerB": "Ramses II.",
+    "answerC": "Cheops",
+    "answerD": "Echnaton",
+    "correct": "A"
+  },
+  {
+    "category": "Chemie",
+    "difficulty": 21,
+    "text": "Welche Ordnungszahl hat Kohlenstoff?",
+    "answerA": "4",
+    "answerB": "6",
+    "answerC": "8",
+    "answerD": "12",
+    "correct": "B"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 21,
+    "text": "Durch welche Meerenge ist Europa von Afrika bei Spanien getrennt?",
+    "answerA": "Beringstraße",
+    "answerB": "Straße von Gibraltar",
+    "answerC": "Bosporus",
+    "answerD": "Dardanellen",
+    "correct": "B"
+  },
+  {
+    "category": "Physik",
+    "difficulty": 22,
+    "text": "Wie heißt die SI-Einheit der elektrischen Kapazität?",
+    "answerA": "Farad",
+    "answerB": "Tesla",
+    "answerC": "Joule",
+    "answerD": "Pascal",
+    "correct": "A"
+  },
+  {
+    "category": "Literatur",
+    "difficulty": 22,
+    "text": "Welche Figur spricht „Sein oder Nichtsein“?",
+    "answerA": "Faust",
+    "answerB": "Hamlet",
+    "answerC": "Othello",
+    "answerD": "Macbeth",
+    "correct": "B"
+  },
+  {
+    "category": "Biologie",
+    "difficulty": 23,
+    "text": "Welches Organ produziert Insulin?",
+    "answerA": "Leber",
+    "answerB": "Bauchspeicheldrüse",
+    "answerC": "Niere",
+    "answerD": "Milz",
+    "correct": "B"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 23,
+    "text": "Welche Revolution begann 1789 in Frankreich?",
+    "answerA": "Industrielle Revolution",
+    "answerB": "Französische Revolution",
+    "answerC": "Glorreiche Revolution",
+    "answerD": "Februarrevolution",
+    "correct": "B"
+  },
+  {
+    "category": "Mathematik",
+    "difficulty": 24,
+    "text": "Wie viele Seiten besitzt ein Ikosaeder?",
+    "answerA": "12",
+    "answerB": "16",
+    "answerC": "20",
+    "answerD": "24",
+    "correct": "C"
+  },
+  {
+    "category": "Astronomie",
+    "difficulty": 24,
+    "text": "Welcher Stern ist der Sonne am nächsten?",
+    "answerA": "Sirius",
+    "answerB": "Proxima Centauri",
+    "answerC": "Wega",
+    "answerD": "Beteigeuze",
+    "correct": "B"
+  },
+  {
+    "category": "Informatik",
+    "difficulty": 25,
+    "text": "Wofür steht SQL?",
+    "answerA": "Structured Query Language",
+    "answerB": "Simple Question List",
+    "answerC": "System Queue Link",
+    "answerD": "Standard Quality Logic",
+    "correct": "A"
+  },
+  {
+    "category": "Musik",
+    "difficulty": 25,
+    "text": "Welcher Komponist schrieb die „Mondscheinsonate“?",
+    "answerA": "Mozart",
+    "answerB": "Beethoven",
+    "answerC": "Bach",
+    "answerD": "Chopin",
+    "correct": "B"
+  },
+  {
+    "category": "Physik",
+    "difficulty": 26,
+    "text": "Wie heißt der Effekt, bei dem Licht durch ein Prisma in Farben zerlegt wird?",
+    "answerA": "Reflexion",
+    "answerB": "Dispersion",
+    "answerC": "Induktion",
+    "answerD": "Diffusion",
+    "correct": "B"
+  },
+  {
+    "category": "Chemie",
+    "difficulty": 26,
+    "text": "Welches Element ist bei Raumtemperatur flüssig?",
+    "answerA": "Brom",
+    "answerB": "Eisen",
+    "answerC": "Natrium",
+    "answerD": "Schwefel",
+    "correct": "A"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 27,
+    "text": "Welcher Fluss mündet nicht ins Mittelmeer?",
+    "answerA": "Nil",
+    "answerB": "Ebro",
+    "answerC": "Donau",
+    "answerD": "Rhone",
+    "correct": "C"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 27,
+    "text": "Welcher Herrscher ließ den Petersdom neu errichten?",
+    "answerA": "Julius II.",
+    "answerB": "Ludwig XIV.",
+    "answerC": "Karl der Große",
+    "answerD": "Napoleon",
+    "correct": "A"
+  },
+  {
+    "category": "Biologie",
+    "difficulty": 28,
+    "text": "Welche Basenpaarung gehört zur DNA?",
+    "answerA": "Adenin–Thymin",
+    "answerB": "Adenin–Uracil",
+    "answerC": "Guanin–Uracil",
+    "answerD": "Cytosin–Uracil",
+    "correct": "A"
+  },
+  {
+    "category": "Mathematik",
+    "difficulty": 28,
+    "text": "Wie lautet die Ableitung von x²?",
+    "answerA": "x",
+    "answerB": "2x",
+    "answerC": "x²",
+    "answerD": "2",
+    "correct": "B"
+  },
+  {
+    "category": "Physik",
+    "difficulty": 29,
+    "text": "Welche Größe bleibt bei einem ideal elastischen Stoß zusätzlich zum Impuls erhalten?",
+    "answerA": "Temperatur",
+    "answerB": "kinetische Energie",
+    "answerC": "Massezahl",
+    "answerD": "Ladung",
+    "correct": "B"
+  },
+  {
+    "category": "Philosophie",
+    "difficulty": 29,
+    "text": "Welcher Philosoph schrieb die „Kritik der reinen Vernunft“?",
+    "answerA": "Kant",
+    "answerB": "Hegel",
+    "answerC": "Nietzsche",
+    "answerD": "Descartes",
+    "correct": "A"
+  },
+  {
+    "category": "Astronomie",
+    "difficulty": 30,
+    "text": "Wie heißt die Grenze um ein Schwarzes Loch, ab der nichts mehr entkommt?",
+    "answerA": "Ereignishorizont",
+    "answerB": "Asteroidengürtel",
+    "answerC": "Koronaloch",
+    "answerD": "Roche-Grenze",
+    "correct": "A"
+  },
+  {
+    "category": "Geschichte",
+    "difficulty": 30,
+    "text": "Welches Schriftstück beginnt mit „We the People“?",
+    "answerA": "Magna Carta",
+    "answerB": "US-Verfassung",
+    "answerC": "Bill of Rights",
+    "answerD": "Unabhängigkeitserklärung",
+    "correct": "B"
+  }
+]

@@ -1,0 +1,29 @@
+<!-- QuizMaster component view. UI state is supplied by its matching TypeScript component. -->
+<header class="bar">
+  <a routerLink="/" class="brand">♛ Quiz<span>Master</span> </a>
+  <nav>
+    <a routerLink="/">Start</a>
+    <a routerLink="/lobby">Lobby</a>
+    @if (g.session()?.game !== 'none' && g.session()?.phase !== 'lobby') {
+      <a routerLink="/play">Spielen</a>
+    }
+    @if (g.me()?.isHost) {
+      <a routerLink="/host">Host-Panel</a><a routerLink="/storage">Storage</a>
+    }
+  </nav>
+  <div class="account">
+    @if (g.me()) {
+      <span>{{ g.me()?.name }}</span> <button class="small" (click)="g.logout()">Logout</button>
+    } @else {
+      <button class="small" (click)="g.login()">Discord Login</button>
+    }
+  </div>
+</header>
+@if (g.connectionError()) {
+  <div class="connection-warning" role="status">{{ g.connectionError() }}</div>
+}
+<qm-toast-stack />
+<qm-confirmation-dialog />
+<main>
+  <router-outlet />
+</main>

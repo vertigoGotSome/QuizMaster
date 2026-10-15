@@ -1,0 +1,660 @@
+{
+  "info": {
+    "name": "QuizMaster Local API",
+    "_postman_id": "6f77de2a-1228-4f6c-a0ba-241517810000",
+    "description": "Discord cookie authentication: first authenticate in browser, then import session cookie via Postman cookie manager for localhost. Host endpoints require the configured Discord HostUserId. No test data is seeded automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5222"
+    }
+  ],
+  "item": [
+    {
+      "name": "Basics",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Discord Login (Browser)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lobby",
+      "item": [
+        {
+          "name": "Lobby",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/lobby",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lobby"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Heartbeat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/lobby/heartbeat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lobby",
+                "heartbeat"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Spielzustand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/game/state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "game",
+                "state"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Host",
+      "item": [
+        {
+          "name": "Imposter wählen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/game",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "game"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"game\": \"imposter\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "WWM wählen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/game",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "game"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"game\": \"wwm\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Wörter anzeigen",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/words",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "words"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fragen anzeigen",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "questions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Wort anlegen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/words",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "words"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Test\",\n  \"word\": \"Beispiel\",\n  \"hint\": \"Ähnlich\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Frage anlegen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "questions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Test\",\n  \"difficulty\": 1,\n  \"text\": \"Beispielfrage?\",\n  \"answerA\": \"A1\",\n  \"answerB\": \"B1\",\n  \"answerC\": \"C1\",\n  \"answerD\": \"D1\",\n  \"correct\": \"A\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imposter starten",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/start-imposter",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "start-imposter"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Phase setzen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/phase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "phase"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phase\": \"vote\",\n  \"advanceRound\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Imposter aufdecken",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/reveal-imposter",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "reveal-imposter"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Frage starten",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/start-question",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "start-question"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Antworten auswerten",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/resolve-question",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "resolve-question"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Antwort korrigieren",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/override-answer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "override-answer"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerId\": 1,\n  \"correct\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Punkte ändern",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/points",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "points"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerId\": 1,\n  \"delta\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Punktelog",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/host/score-log",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "host",
+                "score-log"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Player",
+      "item": [
+        {
+          "name": "Antwort abgeben",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/answers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "answers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answer\": \"A\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Joker",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/joker",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "joker"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kind\": \"risk\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Vote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/vote",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "vote"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"suspectId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

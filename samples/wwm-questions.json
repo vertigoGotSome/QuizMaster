@@ -1,0 +1,22 @@
+[
+  {
+    "category": "General",
+    "difficulty": 1,
+    "text": "Welche Farbe entsteht aus Blau und Gelb?",
+    "answerA": "Rot",
+    "answerB": "Grün",
+    "answerC": "Lila",
+    "answerD": "Orange",
+    "correct": "B"
+  },
+  {
+    "category": "Geografie",
+    "difficulty": 2,
+    "text": "Welches Land hat die Hauptstadt Oslo?",
+    "answerA": "Finnland",
+    "answerB": "Dänemark",
+    "answerC": "Norwegen",
+    "answerD": "Schweden",
+    "correct": "C"
+  }
+]
